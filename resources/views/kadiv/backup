@@ -1,0 +1,94 @@
+
+                                    @foreach ($user as $u)
+                                    <form action="" method="POST">
+                                        @csrf
+                                    <div class="modal-body">
+                                        <div class="form-group">
+                                            <label for="">Nama</label>
+                                            <input type="text" class="form-control jgnputih" readonly value="{{$u->name}}">
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="">NIP</label>
+                                            <input type="text" class="form-control jgnputih" readonly value="{{$u->nip}}">
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="">Tanggal Lahir</label>
+                                            <input type="date" class="form-control jgnputih" readonly value="{{$u->tgl_lahir}}">
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="">Alamat</label>
+                                            <input type="text" class="form-control jgnputih" readonly value="{{$u->alamat}}">
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="">Jabatan</label>
+                                            <input type="text" class="form-control jgnputih" readonly value="{{$u->jabatan}}">
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="">Golongan</label>
+                                            <input type="text" class="form-control jgnputih" readonly value="{{$u->golongan}}">
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="">Jenis Kelamin</label>
+                                            <input type="text" class="form-control jgnputih" readonly value="{{$u->jns_kelamin}}">
+                                        </div>
+
+                                        <!-- resources/views/employee/show.blade.php -->
+                                        <form id="durationForm">
+                                            <label for="tgl_msk">Tanggal Masuk:</label>
+                                            <input type="date" id="tgl_msk" readonly name="tgl_msk" value="{{ $u->tgl_msk }}" />
+
+                                            <button type="button" id="hitung">Hitung</button>
+                                        </form>
+
+                                        <div id="hasil"></div>
+
+                                        <form id="saveForm" method="POST" action="{{ route('kadiv.save-lama-kerja', $u->id) }}">
+                                            @csrf
+                                            <input type="hidden" id="lama_krja" name="lama_krja" value="">
+                                            <button type="submit" id="simpan" style="display: none;">Simpan ke Database</button>
+                                        </form>
+
+                                        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+                                        <script>
+                                            $(document).ready(function() {
+                                                $("#hitung").click(function() {
+                                                    var tglMasuk = new Date($("#tgl_msk").val());
+                                                    var tglSekarang = new Date();
+                                                    var lamaKerja = tglSekarang.getFullYear() - tglMasuk.getFullYear();
+
+                                                    if (tglSekarang.getMonth() < tglMasuk.getMonth() ||
+                                                        (tglSekarang.getMonth() === tglMasuk.getMonth() && tglSekarang.getDate() < tglMasuk.getDate())) {
+                                                        lamaKerja--;
+                                                    }
+
+                                                    $("#hasil").html("Lama kerja: " + lamaKerja + " tahun");
+                                                    $("#lama_krja").val(lamaKerja);
+                                                    $("#simpan").show();
+                                                });
+                                            });
+                                        </script>
+
+                                        <div class="form-group">
+                                            <label for="">Lama Kerja</label>
+                                            <input type="text" class="form-control jgnputih" readonly value="{{$u->lama_krja}}">
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="">Sisa Cuti</label>
+                                            <input type="text" class="form-control jgnputih" readonly value="{{$u->sisa_ct}}">
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                    <button type="button" class="btn btn-danger" data-dismiss="modal">Nonaktifkan Akun</button>
+                                    </div>
+                                    </form>
+                                    </div>
+                                </div>
+                                </div>
+                                @endforeach
